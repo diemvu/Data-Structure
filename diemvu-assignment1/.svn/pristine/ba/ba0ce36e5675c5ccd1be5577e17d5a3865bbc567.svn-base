@@ -1,0 +1,15 @@
+
+package program;
+
+public class Main {
+    /**
+     * 
+     * @param theArgs
+     */
+    public static void main(final String[] theArgs) {
+        final StackUtilities stackUtilities = new StackUtilities();
+        stackUtilities.convertNumbertoBinary();
+
+    }
+
+}

@@ -1,0 +1,42 @@
+
+package program;
+import exceptions.EmptyCollectionException;
+import java.util.Scanner;
+
+
+/**
+ * 
+ * @author Diem Vu
+ * @version 1.0
+ */
+public class Main {
+    /**
+     * this method convert input from console to binary.
+     */
+    public static void convertNumbertoBinary() {
+
+        final Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter a decimal number ");
+        System.out.println("Enter Stop if you want to stop the program");
+        while (scanner.hasNext()) {
+            final String s = scanner.next();
+            try {
+                final int n = Integer.parseInt(s);
+                System.out.println("The binary representation of " + n + " is: "
+                                   + StackUtilities.decimalToBinary(n));
+            } catch (final EmptyCollectionException e) {
+                if (s.contentEquals("Stop")) {
+                    scanner.close();
+                    System.exit(-1);
+                }
+                System.out.println("The value entered is not an integer");
+            }
+        }
+    }
+    /**
+     * @param theArgs argument.
+     */
+    public static void main(final String[] theArgs) {
+        convertNumbertoBinary();
+    }
+}

@@ -1,0 +1,31 @@
+
+package program;
+
+import structures.ArrayStack;
+
+/**
+ * @author Diem Vu
+ * @version 1.0
+ */
+public class StackUtilities {
+    /**
+     * @param theDecimal a decimal number user want to tranform to binary
+     * @return String represention of a decimal number
+     */
+    public static String decimalToBinary(final int theDecimal) {
+        int n = theDecimal;
+        if (n == 0) {
+            return "0";
+        }
+        final ArrayStack<Integer> stack = new ArrayStack<>();
+        while (n > 0) {
+            stack.push(n % 2);
+            n = n / 2;
+        }
+
+        if (n < 0) {
+            return "Can't convert a negative integer";
+        }
+        return stack.toString().replaceAll("\n", "");
+    }
+}

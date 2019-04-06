@@ -1,0 +1,62 @@
+
+package program;
+
+import java.util.Scanner;
+import structures.ArrayStack;
+
+/**
+ * @author Diem Vu
+ * @version 1.0
+ */
+public class StackUtilities {
+    /**
+     * contructor of StackUtilities.
+     */
+    public StackUtilities() {
+    }
+
+    /**
+     * 
+     * @param theDecimal a decimal number user want to tranform to binary
+     * @return String represention of a decimal number
+     */
+    public static String decimalToBinary(final int theDecimal) {
+        int n = theDecimal;
+        if (n <0) return "Can't convert a negative integer";
+        final ArrayStack<Integer> stack = new ArrayStack<>();
+        while (n > 0) {
+            stack.push(n % 2);
+            n = n / 2;
+        }
+        return stack.toString().replaceAll("\n", "");
+    }
+   
+
+    public void convertNumbertoBinary() {
+        final Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter a decimal number ");
+        System.out.println("Enter Stop if you want to stop the program");
+        while (scanner.hasNext()) {
+            final String s = scanner.next();
+            try {
+                final int n = Integer.parseInt(s);
+                System.out.println(decimalToBinary(n));
+                if (n >= 0) {
+                    System.out.println("The binary representaion of decimal ToBinary: "
+                                       + decimalToBinary(n));
+                } else {
+                    System.out.println("Can not convert negative integer");
+                }
+            } catch (final Exception e) {
+                if (s.contentEquals("Stop")) {
+                    System.exit(-1);
+                }
+                System.out.println("The value entered is not a positive integer");
+                scanner.next();
+
+            }
+        }
+        scanner.close();
+    }
+
+}
