@@ -1,0 +1,149 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+/**
+ * 
+ * @author Diem Vu
+ * @version winter 2019
+ */
+public class WordCount {
+    /**
+     * 
+     */
+    private List<String> myWordList;
+    /**
+     * 
+     */
+    private Map<String, Integer> myTreeMap;
+    /**
+     * 
+     */
+    private Map<String, Integer> myHashMap;
+    /**
+     * 
+     */
+    private ArrayList<Entry<String, Integer>> myEntryList;
+
+    /**
+     * 
+     */
+    public WordCount() {
+        myWordList = new ArrayList<>();
+        myTreeMap = new TreeMap<>();
+        myHashMap = new HashMap<>();
+    }
+
+    /**
+     * 
+     * @param theFileName file Name
+     */
+    public void readFile(final File theFileName) {
+        final Scanner scanner;
+
+        try {
+            scanner = new Scanner(theFileName);
+            while (scanner.hasNext()) {
+                final String[] line = scanner.next().trim().split("[^a-zA-Z0-9']+");
+                for (int i = 0; i < line.length; i++) {
+                    if (line[i].length() > 0 && !line[i].equals("'")) {
+                        myWordList.add(line[i].toLowerCase());
+                    }
+
+                }
+
+            }
+            scanner.close();
+        } catch (final FileNotFoundException e) {
+            System.out.println("Exiting program: File Not Found");
+            // e.printStackTrace();
+
+            System.exit(0);
+        }
+
+    }
+    /**
+     * 
+     * @param theMap 
+     */
+    public void storeInMap(final Map<String, Integer> theMap) {
+        for (int i = 0; i < myWordList.size(); i++) {
+            final String word = myWordList.get(i);
+            if (theMap.containsKey(word)) {
+                int frequency = theMap.get(word);
+                frequency++;
+                theMap.put(word, frequency);
+            } else {
+                theMap.put(word, 1);
+            }
+        }
+    }
+
+    public void topFrequency(Map<String, Integer> map) {
+        myEntryList = new ArrayList<Entry<String, Integer>>(map.entrySet());
+        Collections.sort(myEntryList, new Comparator<Entry<String, Integer>>() {
+
+            @Override
+            public int compare(Entry<String, Integer> word1, Entry<String, Integer> word2) {
+                // TODO Auto-generated method stub
+                return word2.getValue().compareTo(word1.getValue());
+            }
+
+        });
+
+    }
+
+    public void topFrequency(int n) {
+        long minTree = Long.MAX_VALUE;
+        for (int j = 0; j < 10; j++) {
+            System.out.println("Using TreeMap");
+            long startTime = System.currentTimeMillis();
+            storeInMap(myTreeMap);
+            topFrequency(myTreeMap);
+            for (int i = 0; i < n && i < myEntryList.size(); i++) {
+                System.out.println(myEntryList.get(i));
+            }
+            System.out.println("**********************************************");
+            long endTime = System.currentTimeMillis();
+            long time = endTime - startTime;
+            if (time < minTree)
+                minTree = time;
+            myTreeMap.clear();
+
+            myEntryList.clear();
+        }
+
+        long minHash = Long.MAX_VALUE;
+        for (int j = 0; j < 10; j++) {
+            System.out.println("Using HashMap");
+            long startTime = System.currentTimeMillis();
+            storeInMap(myHashMap);
+            topFrequency(myHashMap);
+            for (int i = 0; i < n && i < myEntryList.size(); i++) {
+
+                System.out.println(myEntryList.get(i));
+            }
+            System.out.println("**********************************************");
+            long endTime = System.currentTimeMillis();
+            long time = endTime - startTime;
+            if (time < minHash) {
+                minHash = time;
+            }
+
+            myHashMap.clear();
+            myEntryList.clear();
+        }
+        System.out.println("Best time for 10 runs using TreeMap: " + minTree + "ms");
+        System.out.println("Best time for 10 runs using HashMap: " + minHash + "ms");
+
+    }
+
+}
